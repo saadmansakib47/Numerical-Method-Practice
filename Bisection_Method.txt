@@ -1,38 +1,59 @@
 def bisection_method(func, a, b, error_accept):
-    ****
+    """
     This function solves for an unknown root of a non-linear function given the 
-    function , the initial root boundaries, and an acceptable level of error
+    function, the initial root boundaries, and an acceptable level of error.
 
     Parameters:
     --------------------------------
-    :param func : the user defined function which needes to be entered as a string
-    :param a : the initial lower root boundary
-    :param b : the initial upper root boundary
+    :param func: the user-defined function that needs to be entered as a string.
+    :param a: the initial lower root boundary.
+    :param b: the initial upper root boundary.
     :param error_accept: The user's acceptable level of error.
 
     Returns:
     ---------------------------------
-    The root boundaries and the error at the final iteration
-    ****
-
-
+    The root boundaries and the error at the final iteration.
+    """
+    
+    # Defining the function that will be evaluated
     def f(x):
-        f = eval(func)
-        return f 
+        # Using eval to evaluate the function string for a given x
+        return eval(func)  # The variable 'x' will be replaced by its value
 
+    # Initial error between a and b
     error = abs(b - a)
-
-    while error>error_accept:
-        c = (b+a)/2
-
-        if f(a) * f(b) >=0 : 
-            printf("No root or multiple roots present, therefore, the bisection will not work!")
-            quit() 
- 
-        elif f(c) * f(a) < 0 : 
-            b = c 
+    
+    # Loop until the error is within the acceptable limit
+    while error > error_accept:
+        # Midpoint of the interval
+        c = (b + a) / 2
+        
+        # Error Handling: If f(a) and f(b) have the same sign, root cannot be found
+        if f(a) * f(b) > 0:  # Fixed from >= to >
+            print("No root or multiple roots present, therefore, the bisection will not work!")
+            quit()
+        
+        # Check which sub-interval contains the root
+        elif f(c) * f(a) < 0:  # The root lies between a and c
+            b = c
             error = abs(b - a)
-
-        elif f(c) * f(b) < 0 : 
+        
+        elif f(c) * f(b) < 0:  # The root lies between b and c
             a = c
             error = abs(b - a)
+        
+        # If we reach here, something is wrong
+        else:
+            print("Something went wrong")
+            quit()
+
+        # Display intermediate results
+        print(f"The error is {error}")
+        print(f"The lower boundary, a, is {a} and the upper boundary, b, is {b}")
+
+# to call our function's description
+print(bisection_method.__doc__)
+
+# Test cases
+bisection_method("(4*x ** 3) + 3*x - 3", 0, 1, 0.05)  # Test case 1
+bisection_method("(3*x ** 2) - 4", -2, 0, 0.05)  # Test case 2
